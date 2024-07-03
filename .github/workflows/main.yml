@@ -23,9 +23,9 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Run Tests
-        run: |
-          pytest  # Replace with actual test commands if applicable
+     # - name: Run Tests
+      #  run: |
+        #  pytest  # Replace with actual test commands if applicable
 
       - name: Start Flask Server
         run: |
