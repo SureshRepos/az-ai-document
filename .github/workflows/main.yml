@@ -1,0 +1,43 @@
+name: Azure Form Recognizer Workflow
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'  # Replace with your Python version
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+   #   - name: Run Tests  # Replace with actual test commands if applicable
+   #     run: |
+    #      pytest
+
+      - name: Run Azure Form Recognizer Script
+        env:
+          AZURE_FORM_RECOGNIZER_ENDPOINT: ${{ secrets.AZURE_FORM_RECOGNIZER_ENDPOINT }}
+          AZURE_FORM_RECOGNIZER_API_KEY: ${{ secrets.AZURE_FORM_RECOGNIZER_API_KEY }}
+        run: |
+          python your_script.py  # Replace with your script name
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Merge into Main Branch
+        if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged
+        run: git pull origin ${{ github.event.pull_request.head.ref }}
