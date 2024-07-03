@@ -23,16 +23,27 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-   #   - name: Run Tests  # Replace with actual test commands if applicable
-   #     run: |
-    #      pytest
+      - name: Run Tests
+        run: |
+          pytest  # Replace with actual test commands if applicable
+
+      - name: Start Flask Server
+        run: |
+          python -m flask run --host=0.0.0.0 --port=5000 &  # Start Flask server in the background
+          sleep 3  # Wait for server to start (adjust as needed)
 
       - name: Run Azure Form Recognizer Script
         env:
           AZURE_FORM_RECOGNIZER_ENDPOINT: ${{ secrets.AZURE_FORM_RECOGNIZER_ENDPOINT }}
           AZURE_FORM_RECOGNIZER_API_KEY: ${{ secrets.AZURE_FORM_RECOGNIZER_API_KEY }}
         run: |
-          python your_script.py  # Replace with your script name
+          # Perform actions after Flask server is running
+          python app.py  # Replace with your script name
+
+      - name: Run Integration Tests  # Optional: Add integration tests if needed
+        run: |
+          # Example of running integration tests against the running Flask server
+          pytest --integration-tests  # Replace with actual integration test commands if applicable
 
   deploy:
     runs-on: ubuntu-latest

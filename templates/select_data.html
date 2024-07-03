@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Select Data</title>
+</head>
+
+<body>
+  <h1>Select Data</h1>
+  <form method="POST" action="/submit">
+    <input type="hidden" name="file_path" value="{{ file_path }}">
+    {% for key, value in extracted_data.items() %}
+    <label>
+      <input type="checkbox" name="selected_data" value="{{ key }}">
+      {{ key }}: {{ value }}
+    </label><br>
+    {% endfor %}
+    <button type="submit">Submit Selected Data</button>
+  </form>
+</body>
+
+</html>
